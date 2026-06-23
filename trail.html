@@ -499,7 +499,10 @@
     const HYGRAPH_ENDPOINT = 'https://sa-east-1.cdn.hygraph.com/content/cmqk0dfke009x07utej89hs4e/master';
 
     function getSlug() {
-      return new URLSearchParams(window.location.search).get('slug');
+      // reads from /trail/some-slug OR ?slug=some-slug as fallback
+      const parts = window.location.pathname.split('/').filter(Boolean);
+      const fromPath = parts[parts.length - 1];
+      return fromPath !== 'trail' ? fromPath : new URLSearchParams(window.location.search).get('slug');
     }
 
     function diffLabel(d) { return d.charAt(0) + d.slice(1).toLowerCase(); }

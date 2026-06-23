@@ -1,6 +1,6 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/trail/:slug", "destination": "/trail.html?slug=:slug" }
+    { "source": "/trail/:slug", "destination": "/trail.html" }
   ]
 }
