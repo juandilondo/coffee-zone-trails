@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trail · Coffee Zone Colombia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white:      #FAFFF7;
+      --forest:     #1A3C2B;
+      --forest2:    #122B1F;
+      --sage:       #7BAE7F;
+      --sage-light: #A8CDA8;
+      --mist:       #E8F0E9;
+      --mist2:      #D4E4D5;
+      --gold:       #C8A84B;
+      --text:       #1C2B1E;
+      --subtle:     #6B7C6D;
+      --col-yellow: #FCD116;
+      --col-blue:   #003087;
+      --col-red:    #CE1126;
+      --diff-easy:      #7BAE7F;
+      --diff-moderate:  #C8A84B;
+      --diff-difficult: #D4714A;
+      --diff-expert:    #1A3C2B;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.4rem 6vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(18, 43, 31, 0.92);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .nav-back {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(250,255,247,0.5);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--sage); }
+
+    /* ── HERO ── */
+    .trail-hero {
+      height: 92vh;
+      min-height: 560px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .trail-hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.1s ease-out;
+    }
+
+    .trail-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(12, 28, 18, 0.97) 0%,
+        rgba(12, 28, 18, 0.6) 40%,
+        rgba(12, 28, 18, 0.1) 100%
+      );
+    }
+
+    .trail-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(to right,
+        var(--col-yellow) 0%, var(--col-yellow) 50%,
+        var(--col-blue) 50%, var(--col-blue) 75%,
+        var(--col-red) 75%, var(--col-red) 100%);
+      z-index: 3;
+    }
+
+    .trail-hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 6vw 5vh;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: flex-end;
+      gap: 3rem;
+    }
+
+    .trail-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--col-yellow);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .trail-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px; height: 3px;
+      background: linear-gradient(to right,
+        var(--col-yellow) 0%, var(--col-yellow) 50%,
+        var(--col-blue) 50%, var(--col-blue) 75%,
+        var(--col-red) 75%, var(--col-red) 100%);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .trail-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 6vw, 6rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.0;
+      max-width: 18ch;
+    }
+
+    .trail-hero-badge {
+      padding: 1.2rem 1.6rem;
+      border: 1px solid rgba(250,255,247,0.15);
+      border-radius: 6px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      background: rgba(250,255,247,0.04);
+      min-width: 120px;
+    }
+
+    .badge-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--white);
+      display: block;
+    }
+
+    .badge-label {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(250,255,247,0.35);
+      margin-top: 0.3rem;
+      display: block;
+    }
+
+    .diff-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+    }
+
+    .diff-badge.EASY      { background: rgba(123,174,127,0.2); color: var(--diff-easy); border: 1px solid rgba(123,174,127,0.3); }
+    .diff-badge.MODERATE  { background: rgba(200,168,75,0.2);  color: var(--diff-moderate); border: 1px solid rgba(200,168,75,0.3); }
+    .diff-badge.DIFFICULT { background: rgba(212,113,74,0.2);  color: var(--diff-difficult); border: 1px solid rgba(212,113,74,0.3); }
+    .diff-badge.EXPERT    { background: rgba(26,60,43,0.4);    color: var(--sage-light); border: 1px solid rgba(123,174,127,0.2); }
+
+    /* ── BODY ── */
+    .trail-body {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 6vw 8rem;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    /* main content */
+    .trail-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 500;
+      color: var(--forest);
+      margin-bottom: 1.4rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--mist2);
+    }
+
+    .trail-description {
+      font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+      line-height: 2;
+      color: #3a4f3c;
+      font-weight: 300;
+    }
+
+    .trail-description p + p { margin-top: 1.4rem; }
+
+    /* sidebar */
+    .trail-sidebar {
+      position: sticky;
+      top: 5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .sidebar-card {
+      background: var(--mist);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .sidebar-card-header {
+      background: var(--forest);
+      padding: 1rem 1.4rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sage-light);
+    }
+
+    .sidebar-card-body {
+      padding: 1.4rem;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--mist2);
+      font-size: 0.82rem;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+
+    .info-label {
+      color: var(--subtle);
+      font-weight: 400;
+    }
+
+    .info-value {
+      font-weight: 500;
+      color: var(--forest);
+      text-align: right;
+    }
+
+    /* difficulty pill in sidebar */
+    .sidebar-diff {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 100px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .sidebar-diff.EASY      { background: rgba(123,174,127,0.15); color: var(--diff-easy); }
+    .sidebar-diff.MODERATE  { background: rgba(200,168,75,0.15);  color: var(--diff-moderate); }
+    .sidebar-diff.DIFFICULT { background: rgba(212,113,74,0.15);  color: var(--diff-difficult); }
+    .sidebar-diff.EXPERT    { background: rgba(26,60,43,0.15);    color: var(--forest); }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1rem;
+      background: var(--forest);
+      color: var(--white);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .back-btn:hover { background: #2a5c3f; }
+
+    /* colombia sidebar card */
+    .colombia-sidebar {
+      background: var(--forest2);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .colombia-sidebar-flag {
+      height: 4px;
+      background: linear-gradient(to right,
+        var(--col-yellow) 0%, var(--col-yellow) 50%,
+        var(--col-blue) 50%, var(--col-blue) 75%,
+        var(--col-red) 75%, var(--col-red) 100%);
+    }
+
+    .colombia-sidebar-body {
+      padding: 1.4rem;
+    }
+
+    .colombia-sidebar-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--col-yellow);
+      margin-bottom: 0.6rem;
+    }
+
+    .colombia-sidebar-text {
+      font-size: 0.78rem;
+      color: rgba(250,255,247,0.55);
+      line-height: 1.7;
+    }
+
+    /* ── SKELETON ── */
+    .skeleton-hero {
+      height: 92vh;
+      min-height: 560px;
+      background: var(--forest2);
+      animation: shimmer 1.4s infinite;
+    }
+
+    .skeleton-body {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 6vw;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 6rem;
+    }
+
+    .skeleton-line {
+      height: 1.2rem;
+      background: var(--mist2);
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      animation: shimmer 1.4s infinite;
+    }
+
+    .skeleton-line.wide  { width: 100%; }
+    .skeleton-line.med   { width: 70%; }
+    .skeleton-line.short { width: 40%; }
+    .skeleton-line.title { height: 3.5rem; width: 60%; margin-bottom: 1.5rem; }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.9; }
+    }
+
+    /* ── ERROR ── */
+    .error-state {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 4rem 6vw;
+      text-align: center;
+    }
+
+    .error-state h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--forest);
+    }
+
+    .error-state p { color: var(--subtle); font-size: 0.9rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--forest2);
+      padding: 3rem 6vw;
+      border-top: 4px solid transparent;
+      border-image: linear-gradient(to right,
+        var(--col-yellow) 0%, var(--col-yellow) 50%,
+        var(--col-blue) 50%, var(--col-blue) 75%,
+        var(--col-red) 75%, var(--col-red) 100%) 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .footer-note {
+      font-size: 0.68rem;
+      color: rgba(250,255,247,0.25);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .trail-hero-content { grid-template-columns: 1fr; }
+      .trail-hero-badge { display: none; }
+      .trail-body { grid-template-columns: 1fr; gap: 3rem; }
+      .trail-sidebar { position: static; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .trail-hero-img { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="index.html">Trails of the Coffee Zone</a>
+    <a class="nav-back" href="index.html">← All Trails</a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content">
+    <!-- skeleton shown while loading -->
+    <div id="skeleton">
+      <div class="skeleton-hero"></div>
+      <div class="skeleton-body">
+        <div>
+          <div class="skeleton-line title"></div>
+          <div class="skeleton-line wide"></div>
+          <div class="skeleton-line wide"></div>
+          <div class="skeleton-line med"></div>
+          <div class="skeleton-line wide"></div>
+          <div class="skeleton-line short"></div>
+        </div>
+        <div>
+          <div class="skeleton-line wide"></div>
+          <div class="skeleton-line wide"></div>
+          <div class="skeleton-line med"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <a class="footer-brand" href="index.html">Trails of the Coffee Zone</a>
+    <span class="footer-note">Powered by Hygraph · Eje Cafetero, Colombia</span>
+  </footer>
+
+  <script>
+    const HYGRAPH_ENDPOINT = 'https://sa-east-1.cdn.hygraph.com/content/cmqk0dfke009x07utej89hs4e/master';
+
+    function getSlug() {
+      return new URLSearchParams(window.location.search).get('slug');
+    }
+
+    function diffLabel(d) { return d.charAt(0) + d.slice(1).toLowerCase(); }
+
+    function formatDescription(desc) {
+      if (!desc) return '<p>No description available.</p>';
+      return desc.split('\n\n')
+        .filter(p => p.trim())
+        .map(p => `<p>${p.trim()}</p>`)
+        .join('');
+    }
+
+    function renderTrail(trail) {
+      document.title = `${trail.name} · Coffee Zone Colombia`;
+
+      const img = trail.coverImage?.url
+        ? `<img class="trail-hero-img" src="${trail.coverImage.url}" alt="${trail.name}" id="parallax-img" />`
+        : `<div style="position:absolute;inset:0;background:var(--forest2);"></div>`;
+
+      const html = `
+        <section class="trail-hero">
+          ${img}
+          <div class="trail-hero-overlay"></div>
+          <div class="trail-hero-content">
+            <div>
+              <p class="trail-eyebrow">Eje Cafetero · Colombia</p>
+              <span class="diff-badge ${trail.difficulty}">${diffLabel(trail.difficulty)}</span>
+              <h1 class="trail-title">${trail.name}</h1>
+            </div>
+            <div class="trail-hero-badge">
+              <span class="badge-value">${diffLabel(trail.difficulty)}</span>
+              <span class="badge-label">Difficulty</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="trail-body">
+          <div class="trail-content">
+            <h2>About this Trail</h2>
+            <div class="trail-description">
+              ${formatDescription(trail.description?.text)}
+            </div>
+          </div>
+
+          <aside class="trail-sidebar">
+            <div class="sidebar-card">
+              <div class="sidebar-card-header">Trail Info</div>
+              <div class="sidebar-card-body">
+                <div class="info-row">
+                  <span class="info-label">Difficulty</span>
+                  <span class="info-value">
+                    <span class="sidebar-diff ${trail.difficulty}">${diffLabel(trail.difficulty)}</span>
+                  </span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Region</span>
+                  <span class="info-value">Eje Cafetero</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Country</span>
+                  <span class="info-value">Colombia 🇨🇴</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="colombia-sidebar">
+              <div class="colombia-sidebar-flag"></div>
+              <div class="colombia-sidebar-body">
+                <p class="colombia-sidebar-label">About the Region</p>
+                <p class="colombia-sidebar-text">The Eje Cafetero spans Quindío, Risaralda and Caldas — a UNESCO World Heritage landscape of coffee farms, cloud forests and Andean peaks rising to 5,321 m.</p>
+              </div>
+            </div>
+
+            <a class="back-btn" href="index.html">← Back to all trails</a>
+          </aside>
+        </div>`;
+
+      document.getElementById('skeleton').remove();
+      document.getElementById('main-content').innerHTML = html;
+
+      // subtle parallax on hero image
+      const parallaxImg = document.getElementById('parallax-img');
+      if (parallaxImg) {
+        window.addEventListener('scroll', () => {
+          parallaxImg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
+        }, { passive: true });
+      }
+    }
+
+    function renderError(msg) {
+      document.getElementById('skeleton').remove();
+      document.getElementById('main-content').innerHTML = `
+        <div class="error-state">
+          <h2>Trail not found</h2>
+          <p>${msg}</p>
+          <a class="back-btn" href="index.html" style="margin-top:1rem;">← Back to all trails</a>
+        </div>`;
+    }
+
+    async function fetchTrail() {
+      const slug = getSlug();
+      if (!slug) { renderError('No trail specified.'); return; }
+
+      const query = `
+        query GetTrail($slug: String!) {
+          trail(where: { slug: $slug }, stage: PUBLISHED) {
+            id name slug difficulty
+            description { text }
+            coverImage { url }
+          }
+        }`;
+
+      try {
+        const res = await fetch(HYGRAPH_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query, variables: { slug } })
+        });
+        const { data, errors } = await res.json();
+        if (errors?.length) throw new Error(errors[0].message);
+        if (!data.trail) throw new Error(`No trail found for slug "${slug}".`);
+        renderTrail(data.trail);
+      } catch (err) {
+        renderError(err.message);
+      }
+    }
+
+    fetchTrail();
+  </script>
+</body>
+</html>

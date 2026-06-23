@@ -371,6 +371,8 @@
       overflow: hidden;
       background: var(--mist);
       cursor: pointer;
+      display: block;
+      text-decoration: none;
     }
 
     .trail-card-img {
@@ -558,6 +560,136 @@
     /* hidden card for filtering */
     .trail-card.hidden {
       display: none;
+    }
+
+    /* filtered mode — flat uniform grid, no fixed rows */
+    .trails-bento.filtered {
+      grid-template-rows: unset;
+    }
+
+    .trails-bento.filtered .trail-card {
+      grid-column: unset !important;
+      grid-row: unset !important;
+      aspect-ratio: 4/3;
+    }
+
+    /* ─────────────────── COLOMBIA CARD ─────────────────── */
+    .colombia-card {
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--forest);
+      aspect-ratio: 4/3;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .colombia-flag-stripe {
+      height: 5px;
+      flex-shrink: 0;
+      background: linear-gradient(to right,
+        var(--col-yellow) 0%, var(--col-yellow) 50%,
+        var(--col-blue) 50%, var(--col-blue) 75%,
+        var(--col-red) 75%, var(--col-red) 100%);
+    }
+
+    .colombia-card-inner {
+      padding: 2rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .colombia-card-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--col-yellow);
+      margin-bottom: 0.8rem;
+    }
+
+    .colombia-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 1.6vw, 1.25rem);
+      font-weight: 500;
+      color: var(--white);
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+
+    .colombia-card-body {
+      font-size: 0.78rem;
+      color: rgba(250,255,247,0.5);
+      line-height: 1.8;
+    }
+
+    .colombia-card-tags {
+      margin-top: 1.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .colombia-card-tags span {
+      font-size: 0.65rem;
+      font-weight: 500;
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+      border: 1px solid rgba(252,209,22,0.25);
+      color: rgba(250,255,247,0.6);
+    }
+
+    /* ─────────────────── EXPERT EMPTY STATE ─────────────────── */
+    .empty-state {
+      grid-column: 1 / -1;
+      background: var(--forest);
+      border-radius: 6px;
+      padding: 5rem 3rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .empty-flag {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-flag span {
+      display: block;
+      height: 20px;
+      border-radius: 3px;
+    }
+
+    .ef-y { width: 36px; background: var(--col-yellow); }
+    .ef-b { width: 18px; background: var(--col-blue); }
+    .ef-r { width: 18px; background: var(--col-red); }
+
+    .empty-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-style: italic;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .empty-body {
+      font-size: 0.9rem;
+      color: rgba(250,255,247,0.5);
+      line-height: 1.8;
+      max-width: 52ch;
+    }
+
+    .empty-sub {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: rgba(250,255,247,0.25);
+      font-style: italic;
     }
 
     /* ─────────────────── SKELETON ─────────────────── */
@@ -854,52 +986,91 @@
 
     let allTrails = [];
 
-    function renderCards(trails) {
+    const COLOMBIA_CARD = `
+      <div class="colombia-card">
+        <div class="colombia-flag-stripe"></div>
+        <div class="colombia-card-inner">
+          <p class="colombia-card-eyebrow">Did you know?</p>
+          <h3 class="colombia-card-title">Colombia is the only country in South America with coastlines on both the Pacific and the Caribbean.</h3>
+          <p class="colombia-card-body">Home to 10% of the world's plant species and over 1,900 bird species — more than any other country — Colombia's ecosystems span Amazon rainforest, Andean glacier and tropical coast. The Eje Cafetero sits at the heart of it all.</p>
+          <div class="colombia-card-tags">
+            <span>🌿 1,900+ bird species</span>
+            <span>🏔️ 3 Andean ranges</span>
+            <span>☕ UNESCO Heritage</span>
+          </div>
+        </div>
+      </div>`;
+
+    const EXPERT_EMPTY = `
+      <div class="empty-state">
+        <div class="empty-flag">
+          <span class="ef-y"></span><span class="ef-b"></span><span class="ef-r"></span>
+        </div>
+        <h3 class="empty-title">Trails of Legend</h3>
+        <p class="empty-body">No expert trails have been mapped yet — but the Eje Cafetero hides routes few dare to attempt. The high flanks of Nevado del Ruiz and the remote ridges of the Cordillera Central are waiting. Check back soon.</p>
+        <p class="empty-sub">— The Coffee Zone awaits its next explorer —</p>
+      </div>`;
+
+    function trailCard(trail, i) {
+      const img = trail.coverImage?.url
+        ? `<img class="trail-card-img" src="${trail.coverImage.url}" alt="${trail.name}" loading="${i === 0 ? 'eager' : 'lazy'}" />`
+        : `<div style="position:absolute;inset:0;background:var(--forest2);"></div>`;
+      const desc = trail.description?.text || '';
+      const featured = i === 0 ? `<span class="featured-badge">&#9733; Featured</span>` : '';
+      return `
+        <a class="trail-card" data-difficulty="${trail.difficulty}" href="trail.html?slug=${trail.slug}">
+          ${img}
+          ${featured}
+          <div class="diff-bar ${trail.difficulty}"></div>
+          <div class="trail-card-base">
+            <h3 class="trail-name">${trail.name}</h3>
+            <div class="trail-meta">
+              <span class="trail-difficulty-label ${trail.difficulty}">${diffLabel(trail.difficulty)}</span>
+              <span class="trail-meta-dot"></span>
+              <span class="trail-region">Eje Cafetero</span>
+            </div>
+          </div>
+          <div class="trail-card-hover">
+            <h3 class="hover-name">${trail.name}</h3>
+            <p class="hover-desc">${desc}</p>
+            <div class="hover-footer">
+              <span class="hover-diff ${trail.difficulty}">${diffLabel(trail.difficulty)}</span>
+              <span class="hover-cta">View trail &nearr;</span>
+            </div>
+          </div>
+        </a>`;
+    }
+
+    function renderCards(trails, filter) {
       const grid = document.getElementById('trails-grid');
       const count = document.getElementById('trail-count');
       count.textContent = `${trails.length} trail${trails.length !== 1 ? 's' : ''}`;
 
-      grid.innerHTML = trails.map((trail, i) => {
-        const img = trail.coverImage?.url
-          ? `<img class="trail-card-img" src="${trail.coverImage.url}" alt="${trail.name}" loading="${i === 0 ? 'eager' : 'lazy'}" />`
-          : `<div style="position:absolute;inset:0;background:var(--forest2);"></div>`;
-        const desc = trail.description?.text || '';
-        const featured = i === 0 ? `<span class="featured-badge">★ Featured</span>` : '';
+      if (trails.length === 0) {
+        grid.innerHTML = EXPERT_EMPTY;
+        return;
+      }
 
-        return `
-          <article class="trail-card" data-difficulty="${trail.difficulty}">
-            ${img}
-            ${featured}
-            <div class="diff-bar ${trail.difficulty}"></div>
-            <div class="trail-card-base">
-              <h3 class="trail-name">${trail.name}</h3>
-              <div class="trail-meta">
-                <span class="trail-difficulty-label ${trail.difficulty}">${diffLabel(trail.difficulty)}</span>
-                <span class="trail-meta-dot"></span>
-                <span class="trail-region">Eje Cafetero</span>
-              </div>
-            </div>
-            <div class="trail-card-hover">
-              <h3 class="hover-name">${trail.name}</h3>
-              <p class="hover-desc">${desc}</p>
-              <div class="hover-footer">
-                <span class="hover-diff ${trail.difficulty}">${diffLabel(trail.difficulty)}</span>
-                <span class="hover-cta">View trail ↗</span>
-              </div>
-            </div>
-          </article>`;
-      }).join('');
+      let cards = trails.map((trail, i) => trailCard(trail, i)).join('');
+
+      const isFiltered = filter && filter !== 'ALL';
+      if (isFiltered && trails.length % 2 !== 0) {
+        cards += COLOMBIA_CARD;
+      }
+
+      grid.innerHTML = cards;
     }
 
     function applyFilter(filter) {
-      const cards = document.querySelectorAll('.trail-card');
-      cards.forEach(card => {
-        const match = filter === 'ALL' || card.dataset.difficulty === filter;
-        card.classList.toggle('hidden', !match);
-      });
-      // update count
-      const visible = filter === 'ALL' ? allTrails.length : allTrails.filter(t => t.difficulty === filter).length;
-      document.getElementById('trail-count').textContent = `${visible} trail${visible !== 1 ? 's' : ''}`;
+      const grid = document.getElementById('trails-grid');
+      const filtered = filter === 'ALL' ? allTrails : allTrails.filter(t => t.difficulty === filter);
+
+      grid.classList.toggle('filtered', filter !== 'ALL');
+
+      renderCards(filtered, filter);
+
+      const count = filtered.length;
+      document.getElementById('trail-count').textContent = `${count} trail${count !== 1 ? 's' : ''}`;
     }
 
     function initFilters() {
@@ -930,7 +1101,7 @@
         const { data, errors } = await res.json();
         if (errors?.length) throw new Error(errors[0].message);
         allTrails = data.trails;
-        renderCards(allTrails);
+        renderCards(allTrails, 'ALL');
         initFilters();
       } catch (err) {
         renderError(err.message);
