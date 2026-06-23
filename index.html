@@ -6,28 +6,28 @@
   <title>Trails of the Coffee Zone · Colombia</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --white:    #FAFFF7;
       --forest:   #1A3C2B;
+      --forest2:  #122B1F;
       --sage:     #7BAE7F;
+      --sage-light: #A8CDA8;
       --mist:     #E8F0E9;
+      --mist2:    #D4E4D5;
       --gold:     #C8A84B;
       --text:     #1C2B1E;
       --subtle:   #6B7C6D;
-
-      /* Colombian flag */
       --col-yellow: #FCD116;
       --col-blue:   #003087;
       --col-red:    #CE1126;
-
-      --diff-easy:     #7BAE7F;
-      --diff-moderate: #C8A84B;
-      --diff-difficult:#D4714A;
-      --diff-expert:   #1A3C2B;
+      --diff-easy:      #7BAE7F;
+      --diff-moderate:  #C8A84B;
+      --diff-difficult: #D4714A;
+      --diff-expert:    #1A3C2B;
     }
 
     html { scroll-behavior: smooth; }
@@ -38,223 +38,424 @@
       font-family: 'Inter', sans-serif;
       font-weight: 300;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* ── HERO ── */
+    /* ─────────────────── NAV ─────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.4rem 6vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, backdrop-filter 0.4s;
+    }
+
+    nav.scrolled {
+      background: rgba(26,60,43,0.92);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--white);
+      letter-spacing: 0.01em;
+    }
+
+    .nav-flag {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .nav-flag span {
+      display: block;
+      height: 14px;
+      border-radius: 2px;
+    }
+
+    .nav-flag .f-y { width: 22px; background: var(--col-yellow); }
+    .nav-flag .f-b { width: 11px; background: var(--col-blue); }
+    .nav-flag .f-r { width: 11px; background: var(--col-red); }
+
+    /* ─────────────────── HERO ─────────────────── */
     .hero {
       min-height: 100vh;
-      background: var(--forest);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
+      background: var(--forest2);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: flex-end;
       padding: 0 6vw 8vh;
       position: relative;
       overflow: hidden;
+      gap: 4rem;
     }
 
-    .hero::before {
-      content: '';
+    /* topo SVG background */
+    .hero-topo {
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(123,174,127,0.12) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 80% at 10% 80%, rgba(252,209,22,0.07) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 90% 90%, rgba(206,17,38,0.06) 0%, transparent 60%);
+      width: 100%;
+      height: 100%;
+      opacity: 0.06;
       pointer-events: none;
     }
 
-    /* Colombian flag stripe — sits at the very bottom of the hero */
     .hero::after {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       height: 6px;
       background: linear-gradient(to right,
-        var(--col-yellow) 0%,
-        var(--col-yellow) 50%,
-        var(--col-blue) 50%,
-        var(--col-blue) 75%,
-        var(--col-red) 75%,
-        var(--col-red) 100%
-      );
+        var(--col-yellow) 0%, var(--col-yellow) 50%,
+        var(--col-blue) 50%, var(--col-blue) 75%,
+        var(--col-red) 75%, var(--col-red) 100%);
       pointer-events: none;
     }
 
+    .hero-left { position: relative; z-index: 2; padding-bottom: 1rem; }
+
     .hero-eyebrow {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 500;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--col-yellow);
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.6rem;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.7rem;
     }
 
     .hero-eyebrow::before {
       content: '';
       display: inline-block;
-      width: 28px;
-      height: 3px;
+      width: 32px; height: 3px;
       background: linear-gradient(to right,
         var(--col-yellow) 0%, var(--col-yellow) 50%,
         var(--col-blue) 50%, var(--col-blue) 75%,
-        var(--col-red) 75%, var(--col-red) 100%
-      );
+        var(--col-red) 75%, var(--col-red) 100%);
       border-radius: 2px;
       flex-shrink: 0;
     }
 
     .hero-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 8vw, 7rem);
+      font-size: clamp(3.2rem, 6vw, 6.5rem);
       font-weight: 700;
       color: var(--white);
-      line-height: 1.02;
-      max-width: 14ch;
+      line-height: 1.0;
     }
 
     .hero-title em {
       font-style: italic;
       color: var(--sage);
+      display: block;
     }
 
     .hero-sub {
       margin-top: 2rem;
-      font-size: clamp(0.9rem, 1.4vw, 1.05rem);
-      color: rgba(250,255,247,0.55);
-      max-width: 46ch;
-      line-height: 1.7;
-      font-weight: 300;
+      font-size: clamp(0.88rem, 1.2vw, 1rem);
+      color: rgba(250,255,247,0.5);
+      max-width: 42ch;
+      line-height: 1.8;
     }
 
     .hero-scroll {
-      margin-top: 3.5rem;
+      margin-top: 3rem;
       display: flex;
       align-items: center;
       gap: 0.8rem;
-      color: rgba(250,255,247,0.35);
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
+      color: rgba(250,255,247,0.3);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
     }
 
-    .hero-scroll-line {
-      width: 40px;
-      height: 1px;
-      background: rgba(250,255,247,0.25);
+    .hero-scroll-line { width: 40px; height: 1px; background: rgba(250,255,247,0.2); }
+
+    /* hero right — stats panel */
+    .hero-right {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding-bottom: 1rem;
+      border-left: 1px solid rgba(250,255,247,0.08);
+      padding-left: 4rem;
     }
 
-    /* ── TRAILS SECTION ── */
+    .hero-stat {
+      padding: 1.8rem 0;
+      border-bottom: 1px solid rgba(250,255,247,0.07);
+    }
+
+    .hero-stat:last-child { border-bottom: none; }
+
+    .hero-stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .hero-stat-value span {
+      font-size: 0.45em;
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      color: var(--sage);
+      vertical-align: super;
+      margin-left: 2px;
+    }
+
+    .hero-stat-label {
+      margin-top: 0.4rem;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(250,255,247,0.35);
+    }
+
+    /* ─────────────────── ABOUT STRIP ─────────────────── */
+    .about-strip {
+      background: var(--forest);
+      padding: 5rem 6vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .about-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2.1rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--white);
+      line-height: 1.5;
+    }
+
+    .about-quote::before {
+      content: '"';
+      display: block;
+      font-size: 4rem;
+      color: var(--sage);
+      line-height: 1;
+      margin-bottom: -0.5rem;
+      font-style: normal;
+    }
+
+    .about-body {
+      font-size: 0.9rem;
+      color: rgba(250,255,247,0.55);
+      line-height: 1.9;
+    }
+
+    .about-body p + p { margin-top: 1rem; }
+
+    .about-tags {
+      margin-top: 1.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .about-tag {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.8rem;
+      border: 1px solid rgba(123,174,127,0.3);
+      border-radius: 100px;
+      color: var(--sage-light);
+    }
+
+    /* ─────────────────── TRAILS SECTION ─────────────────── */
     .trails-section {
-      padding: 7rem 6vw;
+      padding: 6rem 6vw 8rem;
     }
 
     .section-header {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
-      margin-bottom: 3.5rem;
-      border-bottom: 3px solid transparent;
-      border-image: linear-gradient(to right,
-        var(--col-yellow) 0%, var(--col-yellow) 50%,
-        var(--col-blue) 50%, var(--col-blue) 75%,
-        var(--col-red) 75%, var(--col-red) 100%
-      ) 1;
-      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     .section-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
       font-weight: 500;
       color: var(--forest);
     }
 
     .section-count {
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--subtle);
     }
 
-    /* ── GRID ── */
-    .trails-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-      gap: 1.5rem;
+    /* filter pills */
+    .filter-bar {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 3px solid transparent;
+      border-image: linear-gradient(to right,
+        var(--col-yellow) 0%, var(--col-yellow) 50%,
+        var(--col-blue) 50%, var(--col-blue) 75%,
+        var(--col-red) 75%, var(--col-red) 100%) 1;
     }
 
-    /* ── CARD ── */
+    .filter-pill {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.45rem 1.1rem;
+      border-radius: 100px;
+      border: 1.5px solid var(--mist2);
+      background: transparent;
+      color: var(--subtle);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-pill:hover { border-color: var(--sage); color: var(--forest); }
+
+    .filter-pill.active {
+      background: var(--forest);
+      border-color: var(--forest);
+      color: var(--white);
+    }
+
+    .filter-pill.active.EASY     { background: var(--diff-easy); border-color: var(--diff-easy); }
+    .filter-pill.active.MODERATE { background: var(--diff-moderate); border-color: var(--diff-moderate); color: var(--forest); }
+    .filter-pill.active.DIFFICULT{ background: var(--diff-difficult); border-color: var(--diff-difficult); }
+    .filter-pill.active.EXPERT   { background: var(--diff-expert); border-color: var(--diff-expert); }
+
+    /* ─────────────────── BENTO GRID ─────────────────── */
+    .trails-bento {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 540px 380px 480px;
+      gap: 1.2rem;
+    }
+
+    /* featured card spans full width */
+    .trail-card:first-child {
+      grid-column: 1 / -1;
+      grid-row: 1;
+    }
+
+    .trail-card:nth-child(2) { grid-column: 1; grid-row: 2; }
+    .trail-card:nth-child(3) { grid-column: 2; grid-row: 2; }
+    .trail-card:nth-child(4) { grid-column: 1; grid-row: 3; }
+    .trail-card:nth-child(5) { grid-column: 2; grid-row: 3; }
+
+    /* ─────────────────── CARD ─────────────────── */
     .trail-card {
       position: relative;
-      border-radius: 4px;
+      border-radius: 6px;
       overflow: hidden;
       background: var(--mist);
-      aspect-ratio: 3/4;
       cursor: pointer;
     }
 
     .trail-card-img {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    .trail-card:hover .trail-card-img {
-      transform: scale(1.04);
+    .trail-card:hover .trail-card-img { transform: scale(1.05); }
+
+    /* featured badge */
+    .trail-card:first-child .featured-badge {
+      display: flex;
     }
 
-    /* difficulty bar — the signature element */
+    .featured-badge {
+      display: none;
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      z-index: 5;
+      background: var(--col-yellow);
+      color: var(--forest);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 100px;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* diff bar */
     .diff-bar {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
+      top: 0; left: 0;
+      width: 5px; height: 100%;
       z-index: 3;
       transition: width 0.3s ease;
     }
 
-    .trail-card:hover .diff-bar {
-      width: 6px;
-    }
+    .trail-card:hover .diff-bar { width: 7px; }
+    .diff-bar.EASY      { background: var(--diff-easy); }
+    .diff-bar.MODERATE  { background: var(--diff-moderate); }
+    .diff-bar.DIFFICULT { background: var(--diff-difficult); }
+    .diff-bar.EXPERT    { background: var(--diff-expert); }
 
-    .diff-bar.EASY     { background: var(--diff-easy); }
-    .diff-bar.MODERATE { background: var(--diff-moderate); }
-    .diff-bar.DIFFICULT{ background: var(--diff-difficult); }
-    .diff-bar.EXPERT   { background: var(--diff-expert); }
-
-    /* base overlay — always visible at bottom */
+    /* base info */
     .trail-card-base {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 1.6rem 1.4rem 1.4rem;
-      background: linear-gradient(to top, rgba(20,40,25,0.92) 0%, rgba(20,40,25,0.5) 60%, transparent 100%);
+      bottom: 0; left: 0; right: 0;
+      padding: 2.5rem 1.8rem 1.6rem;
+      background: linear-gradient(to top, rgba(15,32,20,0.96) 0%, rgba(15,32,20,0.6) 55%, transparent 100%);
       z-index: 2;
+    }
+
+    .trail-card:first-child .trail-card-base {
+      padding: 3rem 2.5rem 2rem;
     }
 
     .trail-name {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
       font-weight: 500;
       color: var(--white);
       line-height: 1.2;
     }
 
+    .trail-card:first-child .trail-name {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      max-width: 20ch;
+    }
+
+    .trail-meta {
+      margin-top: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
     .trail-difficulty-label {
-      margin-top: 0.45rem;
-      font-size: 0.68rem;
-      font-weight: 500;
+      font-size: 0.65rem;
+      font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
     }
@@ -264,56 +465,77 @@
     .trail-difficulty-label.DIFFICULT { color: var(--diff-difficult); }
     .trail-difficulty-label.EXPERT    { color: #a0c4a4; }
 
+    .trail-meta-dot {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: rgba(250,255,247,0.3);
+      flex-shrink: 0;
+    }
+
+    .trail-region {
+      font-size: 0.65rem;
+      color: rgba(250,255,247,0.4);
+      letter-spacing: 0.06em;
+    }
+
     /* hover overlay */
     .trail-card-hover {
       position: absolute;
       inset: 0;
-      background: rgba(20, 40, 25, 0.88);
+      background: rgba(15, 32, 20, 0.9);
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 2rem 1.8rem;
+      padding: 2.5rem 2rem;
       z-index: 4;
       opacity: 0;
-      transition: opacity 0.35s ease;
+      transition: opacity 0.3s ease;
     }
 
-    .trail-card:hover .trail-card-hover {
-      opacity: 1;
+    .trail-card:first-child .trail-card-hover {
+      padding: 3rem 2.8rem;
+      justify-content: flex-end;
     }
+
+    .trail-card:hover .trail-card-hover { opacity: 1; }
 
     .hover-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
       font-weight: 700;
       color: var(--white);
       margin-bottom: 1rem;
       line-height: 1.2;
     }
 
+    .trail-card:first-child .hover-name {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+    }
+
     .hover-desc {
       font-size: 0.82rem;
-      color: rgba(250,255,247,0.75);
-      line-height: 1.75;
-      font-weight: 300;
+      color: rgba(250,255,247,0.7);
+      line-height: 1.8;
       display: -webkit-box;
-      -webkit-line-clamp: 7;
+      -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
+    .trail-card:first-child .hover-desc { -webkit-line-clamp: 4; font-size: 0.9rem; }
+
     .hover-footer {
-      margin-top: 1.4rem;
+      margin-top: 1.6rem;
       padding-top: 1rem;
-      border-top: 1px solid rgba(250,255,247,0.15);
+      border-top: 1px solid rgba(250,255,247,0.12);
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
     .hover-diff {
-      font-size: 0.68rem;
-      font-weight: 500;
+      font-size: 0.65rem;
+      font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
     }
@@ -323,78 +545,159 @@
     .hover-diff.DIFFICULT { color: var(--diff-difficult); }
     .hover-diff.EXPERT    { color: #a0c4a4; }
 
-    .hover-arrow {
-      font-size: 1rem;
-      color: var(--sage);
+    .hover-cta {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--sage-light);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      letter-spacing: 0.06em;
     }
 
-    /* ── SKELETON ── */
+    /* hidden card for filtering */
+    .trail-card.hidden {
+      display: none;
+    }
+
+    /* ─────────────────── SKELETON ─────────────────── */
     .skeleton {
       background: var(--mist);
-      border-radius: 4px;
-      aspect-ratio: 3/4;
+      border-radius: 6px;
       animation: shimmer 1.4s infinite;
     }
 
+    .skeleton:first-child { grid-column: 1 / -1; grid-row: 1; }
+    .skeleton:nth-child(2) { grid-column: 1; grid-row: 2; }
+    .skeleton:nth-child(3) { grid-column: 2; grid-row: 2; }
+    .skeleton:nth-child(4) { grid-column: 1; grid-row: 3; }
+    .skeleton:nth-child(5) { grid-column: 2; grid-row: 3; }
+
     @keyframes shimmer {
-      0%   { opacity: 0.6; }
-      50%  { opacity: 1; }
-      100% { opacity: 0.6; }
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.9; }
     }
 
-    /* ── ERROR ── */
+    /* ─────────────────── ERROR ─────────────────── */
     .error-msg {
       grid-column: 1 / -1;
       text-align: center;
-      padding: 4rem 2rem;
+      padding: 5rem 2rem;
       color: var(--subtle);
     }
 
     .error-msg strong {
       display: block;
       font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       color: var(--forest);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
     }
 
-    /* ── FOOTER ── */
+    /* ─────────────────── FOOTER ─────────────────── */
     footer {
-      padding: 3rem 6vw;
+      background: var(--forest2);
+      padding: 4rem 6vw 3rem;
       border-top: 4px solid transparent;
       border-image: linear-gradient(to right,
-        var(--col-yellow) 0%,
-        var(--col-yellow) 50%,
-        var(--col-blue) 50%,
-        var(--col-blue) 75%,
-        var(--col-red) 75%,
-        var(--col-red) 100%
-      ) 1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
+        var(--col-yellow) 0%, var(--col-yellow) 50%,
+        var(--col-blue) 50%, var(--col-blue) 75%,
+        var(--col-red) 75%, var(--col-red) 100%) 1;
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      align-items: start;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(250,255,247,0.07);
     }
 
     .footer-brand {
       font-family: 'Playfair Display', serif;
-      font-size: 1rem;
-      color: var(--forest);
+      font-size: 1.4rem;
       font-style: italic;
+      color: var(--white);
     }
 
-    .footer-note {
+    .footer-tagline {
+      margin-top: 0.5rem;
+      font-size: 0.78rem;
+      color: rgba(250,255,247,0.35);
+      max-width: 36ch;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      text-align: right;
+    }
+
+    .footer-links a {
       font-size: 0.72rem;
-      color: var(--subtle);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(250,255,247,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
     }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 600px) {
-      .hero { padding: 0 5vw 7vh; }
-      .trails-section { padding: 4rem 5vw; }
-      .section-header { flex-direction: column; gap: 0.5rem; }
+    .footer-links a:hover { color: var(--sage); }
+
+    .footer-bottom {
+      padding-top: 1.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-copy {
+      font-size: 0.68rem;
+      color: rgba(250,255,247,0.2);
+      letter-spacing: 0.04em;
+    }
+
+    .footer-location {
+      font-size: 0.68rem;
+      color: rgba(250,255,247,0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* ─────────────────── RESPONSIVE ─────────────────── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .about-strip { grid-template-columns: 1fr; gap: 2.5rem; }
+      .trails-bento {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .trail-card,
+      .trail-card:first-child,
+      .trail-card:nth-child(2),
+      .trail-card:nth-child(3),
+      .trail-card:nth-child(4),
+      .trail-card:nth-child(5) {
+        grid-column: 1;
+        grid-row: auto;
+        aspect-ratio: 4/3;
+      }
+      .skeleton,
+      .skeleton:first-child,
+      .skeleton:nth-child(n) {
+        grid-column: 1;
+        grid-row: auto;
+        aspect-ratio: 4/3;
+      }
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-links { text-align: left; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -404,16 +707,86 @@
 </head>
 <body>
 
+  <!-- NAV -->
+  <nav id="main-nav">
+    <span class="nav-logo">Trails of the Coffee Zone</span>
+    <div class="nav-flag">
+      <span class="f-y"></span>
+      <span class="f-b"></span>
+      <span class="f-r"></span>
+    </div>
+  </nav>
+
   <!-- HERO -->
   <section class="hero">
-    <p class="hero-eyebrow">Eje Cafetero · Colombia</p>
-    <h1 class="hero-title">Trails of the <em>Coffee Zone</em></h1>
-    <p class="hero-sub">Five mountain hikes through cloud forests, páramo highlands and glacier ridges in one of the most biodiverse corners of the Andes.</p>
-    <div class="hero-scroll">
-      <span class="hero-scroll-line"></span>
-      Explore the trails
+    <!-- topographic lines SVG -->
+    <svg class="hero-topo" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <g fill="none" stroke="#7BAE7F" stroke-width="1.2">
+        <ellipse cx="900" cy="300" rx="500" ry="180"/>
+        <ellipse cx="900" cy="300" rx="430" ry="150"/>
+        <ellipse cx="900" cy="300" rx="360" ry="120"/>
+        <ellipse cx="900" cy="300" rx="290" ry="92"/>
+        <ellipse cx="900" cy="300" rx="220" ry="66"/>
+        <ellipse cx="900" cy="300" rx="150" ry="44"/>
+        <ellipse cx="900" cy="300" rx="80" ry="24"/>
+        <ellipse cx="300" cy="600" rx="380" ry="140"/>
+        <ellipse cx="300" cy="600" rx="310" ry="110"/>
+        <ellipse cx="300" cy="600" rx="240" ry="82"/>
+        <ellipse cx="300" cy="600" rx="170" ry="56"/>
+        <ellipse cx="300" cy="600" rx="100" ry="33"/>
+        <ellipse cx="600" cy="100" rx="280" ry="90"/>
+        <ellipse cx="600" cy="100" rx="210" ry="65"/>
+        <ellipse cx="600" cy="100" rx="140" ry="42"/>
+      </g>
+    </svg>
+
+    <div class="hero-left">
+      <p class="hero-eyebrow">Eje Cafetero · Colombia</p>
+      <h1 class="hero-title">
+        Trails of the
+        <em>Coffee Zone</em>
+      </h1>
+      <p class="hero-sub">Five mountain hikes through cloud forests, páramo highlands and glacier ridges in one of the most biodiverse corners of the Andes.</p>
+      <div class="hero-scroll">
+        <span class="hero-scroll-line"></span>
+        Explore the trails
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-stat">
+        <div class="hero-stat-value">5<span>hikes</span></div>
+        <div class="hero-stat-label">Curated Trails</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">4,700<span>m</span></div>
+        <div class="hero-stat-label">Max Elevation</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">3<span>depts</span></div>
+        <div class="hero-stat-label">Quindío · Risaralda · Caldas</div>
+      </div>
     </div>
   </section>
+
+  <!-- ABOUT STRIP -->
+  <div class="about-strip">
+    <div class="about-quote">
+      Where coffee grows between glaciers and cloud forest, the trails are as wild as the land itself.
+    </div>
+    <div class="about-body">
+      <p>The Eje Cafetero — Colombia's Coffee Axis — spans the departments of Quindío, Risaralda and Caldas, nestled in the Central and Western Andes. It is a UNESCO World Heritage landscape of rolling coffee farms, colonial towns and extraordinary biodiversity.</p>
+      <p>Above the plantations, the terrain rises sharply into páramo wetlands and volcanic peaks. These hikes connect both worlds — the cultural warmth of places like Salento and the raw silence of Los Nevados National Park.</p>
+      <div class="about-tags">
+        <span class="about-tag">Cloud Forest</span>
+        <span class="about-tag">Páramo</span>
+        <span class="about-tag">Glacier</span>
+        <span class="about-tag">Wax Palms</span>
+        <span class="about-tag">Birdwatching</span>
+        <span class="about-tag">UNESCO Heritage</span>
+      </div>
+    </div>
+  </div>
 
   <!-- TRAILS -->
   <section class="trails-section">
@@ -421,8 +794,16 @@
       <h2 class="section-title">Featured Hikes</h2>
       <span class="section-count" id="trail-count">Loading…</span>
     </div>
-    <div class="trails-grid" id="trails-grid">
-      <!-- skeletons -->
+
+    <div class="filter-bar" id="filter-bar">
+      <button class="filter-pill active" data-filter="ALL">All</button>
+      <button class="filter-pill EASY" data-filter="EASY">Easy</button>
+      <button class="filter-pill MODERATE" data-filter="MODERATE">Moderate</button>
+      <button class="filter-pill DIFFICULT" data-filter="DIFFICULT">Difficult</button>
+      <button class="filter-pill EXPERT" data-filter="EXPERT">Expert</button>
+    </div>
+
+    <div class="trails-bento" id="trails-grid">
       <div class="skeleton"></div>
       <div class="skeleton"></div>
       <div class="skeleton"></div>
@@ -433,8 +814,22 @@
 
   <!-- FOOTER -->
   <footer>
-    <span class="footer-brand">Trails of the Coffee Zone</span>
-    <span class="footer-note">Powered by Hygraph · Colombia</span>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">Trails of the Coffee Zone</div>
+        <p class="footer-tagline">Exploring the mountain trails of Colombia's Eje Cafetero — from wax palm valleys to glacier ridges.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">All Trails</a>
+        <a href="#">About the Region</a>
+        <a href="#">Travel Tips</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Trails of the Coffee Zone. All rights reserved.</span>
+      <span class="footer-location">📍 Eje Cafetero, Colombia · Powered by Hygraph</span>
+    </div>
   </footer>
 
   <script>
@@ -443,59 +838,84 @@
     const QUERY = `
       query {
         trails(stage: PUBLISHED) {
-          id
-          name
-          slug
-          difficulty
+          id name slug difficulty
           description { text }
           coverImage { url }
         }
       }
     `;
 
-    function diffLabel(d) {
-      return d.charAt(0) + d.slice(1).toLowerCase();
-    }
+    // sticky nav
+    window.addEventListener('scroll', () => {
+      document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    function diffLabel(d) { return d.charAt(0) + d.slice(1).toLowerCase(); }
+
+    let allTrails = [];
 
     function renderCards(trails) {
       const grid = document.getElementById('trails-grid');
       const count = document.getElementById('trail-count');
-
       count.textContent = `${trails.length} trail${trails.length !== 1 ? 's' : ''}`;
 
-      grid.innerHTML = trails.map(trail => {
+      grid.innerHTML = trails.map((trail, i) => {
         const img = trail.coverImage?.url
-          ? `<img class="trail-card-img" src="${trail.coverImage.url}" alt="${trail.name}" loading="lazy" />`
-          : `<div style="position:absolute;inset:0;background:var(--forest);opacity:0.6;"></div>`;
-
+          ? `<img class="trail-card-img" src="${trail.coverImage.url}" alt="${trail.name}" loading="${i === 0 ? 'eager' : 'lazy'}" />`
+          : `<div style="position:absolute;inset:0;background:var(--forest2);"></div>`;
         const desc = trail.description?.text || '';
+        const featured = i === 0 ? `<span class="featured-badge">★ Featured</span>` : '';
 
         return `
-          <article class="trail-card">
+          <article class="trail-card" data-difficulty="${trail.difficulty}">
             ${img}
+            ${featured}
             <div class="diff-bar ${trail.difficulty}"></div>
             <div class="trail-card-base">
               <h3 class="trail-name">${trail.name}</h3>
-              <p class="trail-difficulty-label ${trail.difficulty}">${diffLabel(trail.difficulty)}</p>
+              <div class="trail-meta">
+                <span class="trail-difficulty-label ${trail.difficulty}">${diffLabel(trail.difficulty)}</span>
+                <span class="trail-meta-dot"></span>
+                <span class="trail-region">Eje Cafetero</span>
+              </div>
             </div>
             <div class="trail-card-hover">
               <h3 class="hover-name">${trail.name}</h3>
               <p class="hover-desc">${desc}</p>
               <div class="hover-footer">
                 <span class="hover-diff ${trail.difficulty}">${diffLabel(trail.difficulty)}</span>
-                <span class="hover-arrow">↗</span>
+                <span class="hover-cta">View trail ↗</span>
               </div>
             </div>
-          </article>
-        `;
+          </article>`;
       }).join('');
+    }
+
+    function applyFilter(filter) {
+      const cards = document.querySelectorAll('.trail-card');
+      cards.forEach(card => {
+        const match = filter === 'ALL' || card.dataset.difficulty === filter;
+        card.classList.toggle('hidden', !match);
+      });
+      // update count
+      const visible = filter === 'ALL' ? allTrails.length : allTrails.filter(t => t.difficulty === filter).length;
+      document.getElementById('trail-count').textContent = `${visible} trail${visible !== 1 ? 's' : ''}`;
+    }
+
+    function initFilters() {
+      document.getElementById('filter-bar').addEventListener('click', e => {
+        const pill = e.target.closest('.filter-pill');
+        if (!pill) return;
+        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        applyFilter(pill.dataset.filter);
+      });
     }
 
     function renderError(msg) {
       document.getElementById('trails-grid').innerHTML = `
         <div class="error-msg">
-          <strong>Couldn't load trails</strong>
-          ${msg}
+          <strong>Couldn't load trails</strong>${msg}
         </div>`;
       document.getElementById('trail-count').textContent = '';
     }
@@ -509,7 +929,9 @@
         });
         const { data, errors } = await res.json();
         if (errors?.length) throw new Error(errors[0].message);
-        renderCards(data.trails);
+        allTrails = data.trails;
+        renderCards(allTrails);
+        initFilters();
       } catch (err) {
         renderError(err.message);
       }
