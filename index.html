@@ -1018,7 +1018,7 @@
       const desc = trail.description?.text || '';
       const featured = i === 0 ? `<span class="featured-badge">&#9733; Featured</span>` : '';
       return `
-        <a class="trail-card" data-difficulty="${trail.difficulty}" href="trail.html?slug=${trail.slug}">
+        <a class="trail-card" data-difficulty="${trail.difficulty}" href="/trail/${trail.slug}">
           ${img}
           ${featured}
           <div class="diff-bar ${trail.difficulty}"></div>
