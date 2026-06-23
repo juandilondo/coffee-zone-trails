@@ -68,19 +68,20 @@
 
     .nav-flag {
       display: flex;
-      gap: 4px;
+      flex-direction: column;
+      gap: 2px;
       align-items: center;
     }
 
     .nav-flag span {
       display: block;
-      height: 14px;
-      border-radius: 2px;
+      width: 28px;
+      border-radius: 1px;
     }
 
-    .nav-flag .f-y { width: 22px; background: var(--col-yellow); }
-    .nav-flag .f-b { width: 11px; background: var(--col-blue); }
-    .nav-flag .f-r { width: 11px; background: var(--col-red); }
+    .nav-flag .f-y { height: 8px; background: var(--col-yellow); }
+    .nav-flag .f-b { height: 4px; background: var(--col-blue); }
+    .nav-flag .f-r { height: 4px; background: var(--col-red); }
 
     /* ─────────────────── HERO ─────────────────── */
     .hero {
@@ -110,7 +111,7 @@
       position: absolute;
       bottom: 0; left: 0; right: 0;
       height: 6px;
-      background: linear-gradient(to right,
+      background: linear-gradient(to bottom,
         var(--col-yellow) 0%, var(--col-yellow) 50%,
         var(--col-blue) 50%, var(--col-blue) 75%,
         var(--col-red) 75%, var(--col-red) 100%);
@@ -135,7 +136,7 @@
       content: '';
       display: inline-block;
       width: 32px; height: 3px;
-      background: linear-gradient(to right,
+      background: linear-gradient(to bottom,
         var(--col-yellow) 0%, var(--col-yellow) 50%,
         var(--col-blue) 50%, var(--col-blue) 75%,
         var(--col-red) 75%, var(--col-red) 100%);
@@ -312,7 +313,7 @@
       margin-bottom: 3rem;
       padding-bottom: 2rem;
       border-bottom: 3px solid transparent;
-      border-image: linear-gradient(to right,
+      border-image: linear-gradient(to bottom,
         var(--col-yellow) 0%, var(--col-yellow) 50%,
         var(--col-blue) 50%, var(--col-blue) 75%,
         var(--col-red) 75%, var(--col-red) 100%) 1;
@@ -587,7 +588,7 @@
     .colombia-flag-stripe {
       height: 5px;
       flex-shrink: 0;
-      background: linear-gradient(to right,
+      background: linear-gradient(to bottom,
         var(--col-yellow) 0%, var(--col-yellow) 50%,
         var(--col-blue) 50%, var(--col-blue) 75%,
         var(--col-red) 75%, var(--col-red) 100%);
@@ -656,19 +657,20 @@
 
     .empty-flag {
       display: flex;
-      gap: 3px;
+      flex-direction: column;
+      gap: 2px;
       margin-bottom: 0.5rem;
     }
 
     .empty-flag span {
       display: block;
-      height: 20px;
+      width: 48px;
       border-radius: 3px;
     }
 
-    .ef-y { width: 36px; background: var(--col-yellow); }
-    .ef-b { width: 18px; background: var(--col-blue); }
-    .ef-r { width: 18px; background: var(--col-red); }
+    .ef-y { height: 20px; background: var(--col-yellow); }
+    .ef-b { height: 10px; background: var(--col-blue); }
+    .ef-r { height: 10px; background: var(--col-red); }
 
     .empty-title {
       font-family: 'Playfair Display', serif;
@@ -731,7 +733,7 @@
       background: var(--forest2);
       padding: 4rem 6vw 3rem;
       border-top: 4px solid transparent;
-      border-image: linear-gradient(to right,
+      border-image: linear-gradient(to bottom,
         var(--col-yellow) 0%, var(--col-yellow) 50%,
         var(--col-blue) 50%, var(--col-blue) 75%,
         var(--col-red) 75%, var(--col-red) 100%) 1;
