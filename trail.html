@@ -460,8 +460,13 @@
 </head>
 <body>
 
+  <!-- PREVIEW BANNER -->
+  <div id="preview-banner" style="display:none; position:fixed; top:0; left:0; right:0; z-index:200; background:var(--col-yellow); color:var(--forest); text-align:center; padding:0.5rem 1rem; font-size:0.72rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;">
+    ⚠ Draft Preview — changes visible after saving in Studio
+  </div>
+
   <!-- NAV -->
-  <nav>
+  <nav id="main-nav" style="top:0;">
     <a class="nav-logo" href="/">Trails of the Coffee Zone</a>
     <a class="nav-back" href="/">← All Trails</a>
   </nav>
@@ -496,7 +501,17 @@
   </footer>
 
   <script>
-    const HYGRAPH_ENDPOINT = 'https://sa-east-1.cdn.hygraph.com/content/cmqk0dfke009x07utej89hs4e/master';
+    if (isPreview) {
+      document.getElementById('preview-banner').style.display = 'block';
+      document.getElementById('main-nav').style.top = '34px';
+    }
+
+    const PROD_ENDPOINT    = 'https://sa-east-1.cdn.hygraph.com/content/cmqk0dfke009x07utej89hs4e/master';
+    const PREVIEW_ENDPOINT = 'https://api-sa-east-1.hygraph.com/v2/cmqk0dfke009x07utej89hs4e/master';
+    const PREVIEW_TOKEN    = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3ODU4ODcyMzMsImF1ZCI6WyJodHRwczovL2FwaS1zYS1lYXN0LTEuaHlncmFwaC5jb20vdjIvY21xazBkZmtlMDA5eDA3dXRlajg5aHM0ZS9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC1zYS1lYXN0LTEuaHlncmFwaC5jb20vIiwic3ViIjoiZjY2OTc5NWItOGQ3ZS00MWRkLWIwMjAtNjQ0OTE5YzcxMjg4IiwianRpIjoiY21zZmI1Y2RhMDF1ZTA2bHFnbGNhN3l0cCJ9.ejVH5eyXdthAb7fTPJqylcmTPZW67Phwh5HAtKySxgunp2a737Wr-RtCf3-UL8zv2FUIC0Xsw2YUdG5fyfIRTo5ged4SVxTIEuIJri0JxYyGYWsrV_zQ99YfChvttQm8dSUmiw_RukpJgTl76Vc2kunjjPFfStWWuu0Ts0lpi8Ki-zZamfkZWXy1iS8fxOkAq3j_bbJxeCHb317YM2ifm1ppGMMorzWftaBv-DRNX0ZE1ctzyAkbTMUtt46om2IrczjnskioGu7owuLfB_wYuen6OOylzjnrMlt7p4GCOZMgjfHoEzlYK4JjXpun43OK5WfhOW66ryTAO1rndjL5icnIcEF5tRt4TfoLuXoQ-sRUN3mgWKlZCu_drjcPVr8-Wi6NBmnbs2lo7H8v-S9GDxiaR7FOdFyQkGfxvoDwBI6Vc2TsxXzneZFwXGffIxg5iZbXBonWzYJ8Y8UN4Tp_0NsKHvkymd3QtNywa01hhxin3dsG4RIbsFLlBD5vgJKdKZaoUfuPuh8NKMHn84mdgDqCE6DNR9MMOdVYEmaBZropRWTf3dVNe0VrdYQVJgmOCE_EpA1sO8OnV9J0MEUEhEUdwCI7yKq-o_88891pZGE5Dkn6O1KwYwEqThAZbOYdPSzj3b37slzLnfKhG-Iu2zqfnjC28hoNUsu8qz-Z74E';
+
+    const isPreview = new URLSearchParams(window.location.search).get('preview') === 'true';
+    const HYGRAPH_ENDPOINT = isPreview ? PREVIEW_ENDPOINT : PROD_ENDPOINT;
 
     function getSlug() {
       return new URLSearchParams(window.location.search).get('slug');
@@ -603,9 +618,10 @@
       const slug = getSlug();
       if (!slug) { renderError('No trail specified.'); return; }
 
+      const stage = isPreview ? 'DRAFT' : 'PUBLISHED';
       const query = `
         query GetTrail($slug: String!) {
-          trail(where: { slug: $slug }, stage: PUBLISHED) {
+          trail(where: { slug: $slug }, stage: ${stage}) {
             id name slug difficulty
             description { text }
             coverImage { url }
@@ -613,9 +629,12 @@
         }`;
 
       try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (isPreview) headers['Authorization'] = `Bearer ${PREVIEW_TOKEN}`;
+
         const res = await fetch(HYGRAPH_ENDPOINT, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers,
           body: JSON.stringify({ query, variables: { slug } })
         });
         const { data, errors } = await res.json();
